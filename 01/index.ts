@@ -1,6 +1,10 @@
 import * as fs from 'fs';
 
-const input = fs.readFileSync(`${__dirname}/input`).toString().split('\n').map(num => parseInt(num, 10));
+const input = fs
+  .readFileSync(`${__dirname}/input`)
+  .toString()
+  .split('\n')
+  .map((num) => parseInt(num, 10));
 
 function twoSum(nums: number[], target: number): [number, number] | null {
   const seen = new Set<number>();
@@ -14,10 +18,13 @@ function twoSum(nums: number[], target: number): [number, number] | null {
   return null;
 }
 
-function threeSum(nums: number[], target: number): [number, number, number] | null {
+function threeSum(
+  nums: number[],
+  target: number
+): [number, number, number] | null {
   for (let i = 0; i < nums.length; i++) {
     const remainder = target - nums[i];
-    const twoSumResult = twoSum(nums.slice(i+1), remainder);
+    const twoSumResult = twoSum(nums.slice(i + 1), remainder);
     if (twoSumResult) {
       return [nums[i], ...twoSumResult];
     }
