@@ -1,27 +1,33 @@
 import * as fs from 'fs';
 
-let groups = fs
-  .readFileSync(`${__dirname}/input`)
-  .toString()
-  .split('\n')
-  .reduce<Array<Set<string>>>(
-    (acc, line) => {
-      if (line === '') {
-        acc.push(new Set());
-      } else {
-        const currentSet = acc[acc.length - 1];
-        for (const char of line) {
-          currentSet.add(char);
+let inputLines = fs.readFileSync(`${__dirname}/input`).toString().split('\n');
+
+let numGroupsAllAnsweredYes = 0;
+
+for (let i = 0; i < inputLines.length; i++) {
+  const currentSet = new Set();
+  let groupStartIndex = i;
+
+  while (inputLines[i] !== '') {
+    if (groupStartIndex === i) {
+      for (const char of inputLines[i]) {
+        currentSet.add(char);
+      }
+    } else {
+      const newSet = new Set();
+      for (const char of inputLines[i]) {
+        newSet.add(char);
+      }
+      for (const char of currentSet) {
+        if (!newSet.has(char)) {
+          currentSet.delete(char);
         }
       }
-      return acc;
-    },
-    [new Set()]
-  );
+    }
+    i++;
+  }
 
-let sumOfCounts = 0;
-for (const group of groups) {
-  sumOfCounts += group.size;
+  numGroupsAllAnsweredYes += currentSet.size;
 }
 
-console.log(sumOfCounts);
+console.log(numGroupsAllAnsweredYes);
